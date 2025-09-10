@@ -1,3 +1,34 @@
-body{
-    background-color: green;
+body {
+    background-color: #fff0f5; /* rosa clarinho de fundo */
+    color: #333;
+}
+
+header {
+    background-color: hotpink; /* cabeçalho rosa forte */
+    color: white;
+}
+
+h1 {
+    color: deeppink; /* título rosa escuro */
+}
+
+li {
+    color: purple; /* itens da lista em roxo */
+}
+
+a {
+    color: hotpink; /* links em rosa */
+}
+
+a:hover {
+    color: mediumvioletred; /* links ficam rosa mais escuro ao passar o rato */
+}
+
+img {
+    border: 5px solid pink; /* moldura rosa na imagem */
+}
+
+footer {
+    background-color: pink; /* rodapé rosa */
+    color: #222;
 }
