@@ -1,34 +1,31 @@
 body {
-    background-color: #fff0f5; /* rosa clarinho de fundo */
+    background-color: #f0fff2;
     color: #333;
 }
 
-header {
-    background-color: hotpink; /* cabeçalho rosa forte */
-    color: white;
-}
+
 
 h1 {
-    color: deeppink; /* título rosa escuro */
+    color: rgb(43, 255, 20); 
 }
 
 li {
-    color: purple; /* itens da lista em roxo */
+    color: purple;
 }
 
 a {
-    color: hotpink; /* links em rosa */
+    color: rgb(195, 105, 255);
 }
 
 a:hover {
-    color: mediumvioletred; /* links ficam rosa mais escuro ao passar o rato */
+    color: rgb(33, 21, 199); 
 }
 
 img {
-    border: 5px solid pink; /* moldura rosa na imagem */
+    border: 5px solid rgb(192, 214, 255); 
 }
 
 footer {
-    background-color: pink; /* rodapé rosa */
+    background-color: pink; 
     color: #222;
 }
