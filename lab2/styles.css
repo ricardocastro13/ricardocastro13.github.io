@@ -1,15 +1,3 @@
 body{
     background: rgba(0, 183, 255, 0.16);
 }
-.linha {
-  display: flex;          /* põe as imagens lado a lado */
-  justify-content: left; /* centra a linha */
-  gap: 10px;              /* espaço entre imagens */
-  margin-bottom: 10px;    /* espaço entre as duas linhas */
-}
-
-.linha img {
-  width: 200px;   /* tamanho fixo para cada foto */
-  height: auto;   /* mantém a proporção */
-  border-radius: 8px; /* opcional: cantos arredondados */
-}
