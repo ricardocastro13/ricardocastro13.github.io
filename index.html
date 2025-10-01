@@ -2,51 +2,73 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <title>Primeira Página </title>
+    <title>Minha Landing Page</title>
     <link rel="stylesheet" href="styles.css">
-
-    
 </head>
 <body>
+
     <header>
-        <h1>Primeira Página Web!
-            
-        </h1>
-        
+        <h1>O meu Website</h1>
+        <nav>
+            <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#disciplinas">DIW</a></li>
+                <li><a href="#projetos">Projetos</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
-        <p> Eis a minha primeira pagina Web!</p>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1>Bem-vindo à minha página!</h1>
+                <p>Aqui vamos ver todos os meus projetos👌😁 🚀</p>
+                <a href="#projetos" class="btn">Ver Projetos</a>
+            </div>
+        </section>
+
+        <section id="disciplinas">
+    <div class="texto">
+        <h2>Sobre DIWs</h2>
         <p>
-            Na unidade Curricular de 
-           <a href="https://moodle.ensinolusofona.pt/course/view.php?id=11232" target="_blank">
-  Desenvolvimento de Interfaces Web
-</a>
-            abordamos as seguintes tecnologias Web &#127760;:
+            Na unidade curricular de 
+            <a href="https://moodle.ensinolusofona.pt/course/view.php?id=11232" target="_blank">
+                Desenvolvimento de Interfaces Web
+            </a>
+            exploramos os fundamentos do desenvolvimento web moderno. 
+            Começamos por aprender a estruturar conteúdos com <strong>HTML</strong>, 
+            a aplicar estilos e design com <strong>CSS</strong>, 
+            e a adicionar interatividade através de <strong>JavaScript</strong>.
         </p>
-        <ul>
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>React e Next.js</li>
-        </ul>
-        <p>Iremos criar soluções criativas!</p>
+        <p>
+            Posteriormente, abordamos ferramentas mais avançadas como <strong>React</strong>, 
+            uma biblioteca para construir interfaces dinâmicas, e <strong>Next.js</strong>, 
+            que facilita a criação de aplicações otimizadas e rápidas. 
+            Também trabalhamos conceitos de <em>responsividade</em>, 
+            acessibilidade e boas práticas de usabilidade.
+        </p>
+        <p>
+            O objetivo é que, no final da disciplina, sejamos capazes de 
+            planear e desenvolver páginas web modernas, funcionais e adaptadas 
+            a diferentes dispositivos, combinando teoria e prática em vários projetos.
+        </p>
+    </div>
+</section>
 
-
-        <nav>
-            <ul>
-                <li><a href="lab1/index.html">lab1</a></li>
-                <li><a href="lab2/index.html">lab2</a></li>
-                
-            </ul>
-        </nav>
-
-        <img src="images/nuvem.svg" alt="Desenvolvimento de Interfaces Web" style ="width: 300px;" >
+        <section id="projetos">
+            <div class="cards">
+                <div class="card">
+                    <a href="lab1/index.html">lab1</a>
+                </div>
+                <div class="card">
+                    <a href="lab2/index.html">lab2</a>
+                </div>
+                <div class="card">
+                    <a href="lab2 copy/index.html">lab3</a>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer>
-        <p> Universidade Lusofona 2025</p>
-    </footer>
-    
 </body>
 </html>

@@ -1,31 +1,156 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background-color: #f0fff2;
-    color: #333;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    scroll-behavior: smooth;
+    background-image: url("images/imagemlanding.jpg");
+    background-size: cover;       
+    background-position: center;  
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+}
+
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: left;    
+    align-items: center;
+    padding: 15px 30px;
+    background-color: rgba(244, 244, 244, 0.9);
+    gap: 200px;
+   
+    
+}
+
+
+header h1 {
+    font-size: 2rem;
+    color: #113b89dc;
+}
+
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    
+    gap: 60px;
+}
+
+header nav a {
+    color: #b42159dc;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+header nav a:hover {
+    color: #ff6600;
+}
+
+
+.hero {
+    height: 100vh;
+    background-image: url("img/fundo.jpg");
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 0 20px;
+}
+
+
+.hero-content {
+    background: rgba(0,0,0,0.5);
+    background-image: url(images/nuvem.svg);
+    padding: 2rem;
+    border-radius: 10px;
+}
+
+.hero-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: #ff6600;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background 0.3s ease;
+}
+
+.btn:hover {
+    background: #cc5200;
 }
 
 
 
-h1 {
-    color: rgb(43, 255, 20); 
+section {
+    padding: 4rem 2rem;
+    min-height: 100vh; 
 }
 
-li {
-    color: purple;
+
+main {
+    padding-top: 80px;
+}
+.cards {
+    display: flex;           
+    justify-content: center;  
+    gap: 2rem;                
+    flex-wrap: wrap;         
+}
+.card {
+    width: 200px;
+    height: 150px;
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:nth-child(1) {
+    background-color: #ff5733;  
 }
 
-a {
-    color: rgb(195, 105, 255);
+.card:nth-child(2) {
+    background-color: #33a1ff; 
 }
 
-a:hover {
-    color: rgb(33, 21, 199); 
+.card:nth-child(3) {
+    background-color: #33ff7a; 
 }
 
-img {
-    border: 5px solid rgb(192, 214, 255); 
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-footer {
-    background-color: pink; 
-    color: #222;
+
+.card a {
+    color: white;
+    text-decoration: none;
 }

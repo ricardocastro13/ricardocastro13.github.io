@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>A Minha Cidade</title>
+    <link rel="stylesheet" href="styles.css">
+
+    
+    
+</head>
+<body>
+    <header>
+        <h1>A Minha Cidade</h1>
+        <span class="menu-toggle">&#9776;</span>
+        <nav>
+            <a href="../index.html">Início</a>
+            <a href="index.html" class="active">Home</a>
+            <a href="local.html">Localização</a>
+            <a href="multimedia.html">Multimédia</a>
+            <a href="info.html">Informações</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Home</h2>
+        <p>A minha cidade é muito linda!!!</p>
+    </main>
+
+    <footer>
+        <p>Universidade lusofona</p>
+    </footer>
+
+    
+    <script>
+        const toggle = document.querySelector('.menu-toggle');
+        const nav = document.querySelector('nav');
+
+        toggle.addEventListener('click', () => {
+            nav.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
