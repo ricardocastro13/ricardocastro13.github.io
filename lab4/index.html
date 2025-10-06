@@ -1,43 +1,33 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="pt">
 <head>
-    <meta charset="UTF-8">
-    <title>A Minha Cidade</title>
-    <link rel="stylesheet" href="styles.css">
-
-    
-    
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Laboratório JavaScript - Eventos</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>A Minha Cidade</h1>
-        <span class="menu-toggle">&#9776;</span>
-        <nav>
-            <a href="../index.html">Início</a>
-            <a href="index.html" class="active">Home</a>
-            <a href="local.html">Localização</a>
-            <a href="multimedia.html">Multimédia</a>
-            <a href="info.html">Informações</a>
-        </nav>
-    </header>
+  <header>
+    <h1 id="titulo">Olá!</h1>
+  </header>
 
-    <main>
-        <h2>Home</h2>
-        <p>A minha cidade é muito linda!!!</p>
-    </main>
+  <main>
+    <p>A minha página na Web 😎</p>
 
-    <footer>
-        <p>Universidade lusofona</p>
-    </footer>
+    <button onclick="saudar()">Saudação</button>
+    <button onclick="mudarTexto()">Mudar Texto</button>
+    <button ondblclick="mudarCor()">Duplo Clique</button>
+    <button onmouseover="destacar()" onmouseout="retirarDestaque()">Passar Rato</button>
+    <button onclick="contar()">Contar</button>
 
-    
-    <script>
-        const toggle = document.querySelector('.menu-toggle');
-        const nav = document.querySelector('nav');
+    <h2 id="contador">Contador: 0</h2>
+    <p id="mensagem"></p>
+  </main>
 
-        toggle.addEventListener('click', () => {
-            nav.classList.toggle('open');
-        });
-    </script>
+  <footer>
+    <p>Feito por mim © 2025</p>
+  </footer>
+
+  <script src="main.js"></script>
 </body>
 </html>
