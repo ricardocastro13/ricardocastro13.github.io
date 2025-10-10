@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 1️⃣ Passa por aqui - muda texto ao passar o rato
+  // 1️⃣ Passa por aqui — muda texto ao passar o rato
   const passa = document.querySelector('#passa');
   const mensagem = document.querySelector('#mensagem');
 
@@ -12,17 +12,18 @@ document.addEventListener('DOMContentLoaded', () => {
     mensagem.textContent = 'Texto original';
   });
 
-  // 2️⃣ Pinta-me - muda cor ao clicar (USANDO ARROW FUNCTION)
+  // 2️⃣ Pinta-me — usando querySelectorAll + data-color + arrow function
   const pinta = document.querySelector('#pinta');
-  const mudaCor = (button) => {
-    pinta.style.color = button.dataset.color;
-  };
 
   document.querySelectorAll('button[data-color]').forEach(button => {
-    button.addEventListener('click', () => mudaCor(button));
+    button.addEventListener('click', () => {
+      const cor = button.dataset.color;
+      pinta.style.color = cor;
+      pinta.textContent = `Agora estou ${cor.toUpperCase()}! 🎨`;
+    });
   });
 
-  // 3️⃣ Experimenta escrever - muda fundo a cada letra
+  // 3️⃣ Experimenta escrever — muda o fundo a cada letra
   const caixaTexto = document.querySelector('#caixaTexto');
   const cores = ['lightblue', 'lightgreen', 'lightpink', 'khaki', 'lavender'];
   let indiceCor = 0;
@@ -32,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     indiceCor = (indiceCor + 1) % cores.length;
   });
 
-  // 4️⃣ Escolhe uma cor (select)
+  // 4️⃣ Escolhe uma cor (em inglês)
   const seletor = document.querySelector('#seletor');
   seletor.addEventListener('change', function() {
     if (this.value) {
