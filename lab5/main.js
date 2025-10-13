@@ -37,16 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+
   const contadorElem = document.querySelector('#contador');
   const btnConta = document.querySelector('#btnConta');
   let contador = Number(localStorage.getItem('contador')) || 0;
   contadorElem.textContent = contador;
 
-  btnConta.addEventListener('click', () => {
-    contador++;
-    contadorElem.textContent = contador;
-    localStorage.setItem('contador', contador);
-  });
+  let intervalo = null;
 
   function count() {
     contador++;
@@ -54,7 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
     localStorage.setItem('contador', contador);
   }
 
-  setInterval(count, 1000);
+  btnConta.addEventListener('click', () => {
+    if (!intervalo) {
+      
+      intervalo = setInterval(count, 1000);
+      btnConta.textContent = 'Parar Contador';
+    } else {
+      
+      clearInterval(intervalo);
+      intervalo = null;
+      btnConta.textContent = 'Iniciar Contador';
+    }
+  });
 
   const nomeInput = document.querySelector('#nome');
   const idadeInput = document.querySelector('#idade');
