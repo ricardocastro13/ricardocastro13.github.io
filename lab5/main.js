@@ -1,29 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-  // 1️⃣ Passa por aqui — muda texto ao passar o rato
   const passa = document.querySelector('#passa');
   const mensagem = document.querySelector('#mensagem');
 
   passa.addEventListener('mouseover', () => {
-    mensagem.textContent = 'Olá! Passaste por aqui 😄';
+    mensagem.textContent = 'Olá! Passaste aqui ';
   });
 
   passa.addEventListener('mouseout', () => {
     mensagem.textContent = 'Texto original';
   });
 
-  // 2️⃣ Pinta-me — usando querySelectorAll + data-color + arrow function
   const pinta = document.querySelector('#pinta');
 
   document.querySelectorAll('button[data-color]').forEach(button => {
     button.addEventListener('click', () => {
       const cor = button.dataset.color;
       pinta.style.color = cor;
-      pinta.textContent = `Agora estou ${cor.toUpperCase()}! 🎨`;
+      pinta.textContent = `Agora estou ${cor}`;
     });
   });
 
-  // 3️⃣ Experimenta escrever — muda o fundo a cada letra
   const caixaTexto = document.querySelector('#caixaTexto');
   const cores = ['lightblue', 'lightgreen', 'lightpink', 'khaki', 'lavender'];
   let indiceCor = 0;
@@ -33,7 +30,6 @@ document.addEventListener('DOMContentLoaded', () => {
     indiceCor = (indiceCor + 1) % cores.length;
   });
 
-  // 4️⃣ Escolhe uma cor (em inglês)
   const seletor = document.querySelector('#seletor');
   seletor.addEventListener('change', function() {
     if (this.value) {
@@ -41,17 +37,41 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 5️⃣ Contador com localStorage
   const contadorElem = document.querySelector('#contador');
   const btnConta = document.querySelector('#btnConta');
-
-  let contador = localStorage.getItem('contador') || 0;
+  let contador = Number(localStorage.getItem('contador')) || 0;
   contadorElem.textContent = contador;
 
   btnConta.addEventListener('click', () => {
     contador++;
     contadorElem.textContent = contador;
     localStorage.setItem('contador', contador);
+  });
+
+  function count() {
+    contador++;
+    contadorElem.textContent = contador;
+    localStorage.setItem('contador', contador);
+  }
+
+  setInterval(count, 1000);
+
+  const nomeInput = document.querySelector('#nome');
+  const idadeInput = document.querySelector('#idade');
+  const btnMostrar = document.querySelector('#btnMostrar');
+  const frase = document.querySelector('#frase');
+
+  btnMostrar.addEventListener('click', () => {
+    const nome = nomeInput.value.trim();
+    const idade = idadeInput.value.trim();
+
+    if (!nome || !idade) {
+      frase.textContent = 'Por favor, preenche o nome e a idade.';
+      frase.style.color = 'red';
+    } else {
+      frase.style.color = 'black';
+      frase.textContent = `Olá ${nome}! Tens ${idade} anos.`;
+    }
   });
 
 });

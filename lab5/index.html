@@ -4,36 +4,15 @@
   <meta charset="UTF-8">
   <title>Exercícios JS - DIW</title>
   <script defer src="main.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
-      transition: background-color 0.5s;
-    }
-    button {
-      margin: 5px;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    input {
-      padding: 5px;
-      margin: 10px;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
-
 <body>
 
-  <!-- 1️⃣ Passa por aqui -->
   <h2 id="passa">Passa por aqui 👇</h2>
   <p id="mensagem">Texto original</p>
 
   <hr>
 
-  <!-- 2️⃣ Pinta-me -->
   <h2 id="pinta">Pinta-me!</h2>
   <button data-color="red">Vermelho</button>
   <button data-color="blue">Azul</button>
@@ -41,13 +20,11 @@
 
   <hr>
 
-  <!-- 3️⃣ Experimenta escrever -->
   <h2>Experimenta escrever:</h2>
   <input id="caixaTexto" type="text" placeholder="Escreve aqui...">
 
   <hr>
 
-  <!-- 4️⃣ Escolhe uma cor -->
   <h2>Escolhe uma cor (em inglês):</h2>
   <select id="seletor">
     <option value="">-- Escolhe uma cor --</option>
@@ -59,8 +36,15 @@
   </select>
 
   <hr>
+  <h2>Apresenta-te:</h2>
+  <label for="nome">Nome:</label>
+  <input id="nome" type="text" placeholder="Insira o teu nome">
+  <label for="idade">Idade:</label>
+  <input id="idade" type="number" placeholder="A tua idade">
+  <button id="btnMostrar">Mostrar frase</button>
+  <p id="frase"></p>
 
-  <!-- 5️⃣ Contador -->
+  <hr>
   <h2>Contador:</h2>
   <h1 id="contador">0</h1>
   <button id="btnConta">Conta</button>
