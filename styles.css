@@ -149,6 +149,9 @@ main {
 .card:nth-child(5){
     background-color: #ff33d4; 
 }
+.card:nth-child(6){
+    background-color: #ffbd33; 
+}
 
 
 .card:hover {
