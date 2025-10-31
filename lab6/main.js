@@ -1,30 +1,42 @@
 import { produtos } from "./produtos.js";
 import { produtos as produtos2 } from "./produtos2.js";
 
-const listaProdutos = document.getElementById("lista-produtos");
-const listaCarrinho = document.getElementById("lista-carrinho");
-const totalElement = document.getElementById("total");
+var listaProdutos = document.getElementById("lista-produtos");
+var listaCarrinho = document.getElementById("lista-carrinho");
+var totalElement = document.getElementById("total");
+var carrinhoContainer = document.getElementById("carrinho");
 
-let carrinho = [];
+var secInicio = document.getElementById("inicio");
+var secProdutos = document.getElementById("catalogo");
 
+var linkInicio = document.querySelector("nav ul li a[href='#inicio']");
+var linkProdutos = document.querySelector("nav ul li a[href='#catalogo']");
+var linkCarrinho = document.querySelector("nav ul li a[href='#carrinho']");
 
-const todosProdutos = [...produtos, ...produtos2];
+var carrinho = [];
+var todosProdutos = produtos.concat(produtos2);
 
 
 function mostrarProdutos() {
   listaProdutos.innerHTML = "";
-  todosProdutos.forEach((p) => {
-    const artigo = document.createElement("article");
-    artigo.innerHTML = `
-      <img src="${p.image}" alt="${p.title}">
-      <h3>${p.title}</h3>
-      <p>${p.category}</p>
-      <p><strong>€${p.price.toFixed(2)}</strong></p>
-      <button>Adicionar ao Carrinho</button>
-    `;
-    artigo.querySelector("button").addEventListener("click", () => adicionarAoCarrinho(p));
+  for (var i = 0; i < todosProdutos.length; i++) {
+    var p = todosProdutos[i];
+    var artigo = document.createElement("article");
+    artigo.innerHTML = 
+      "<img src='" + p.image + "' alt='" + p.title + "'>" +
+      "<h3>" + p.title + "</h3>" +
+      "<p>" + p.category + "</p>" +
+      "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
+      "<button>Adicionar ao Carrinho</button>";
+    
+    (function(index) {
+      artigo.querySelector("button").addEventListener("click", function() {
+        adicionarAoCarrinho(todosProdutos[index]);
+      });
+    })(i);
+
     listaProdutos.appendChild(artigo);
-  });
+  }
 }
 
 
@@ -42,20 +54,52 @@ function removerDoCarrinho(index) {
 
 function atualizarCarrinho() {
   listaCarrinho.innerHTML = "";
-  let total = 0;
+  var total = 0;
 
-  carrinho.forEach((p, index) => {
-    const item = document.createElement("li");
-    item.innerHTML = `
-      ${p.title} - €${p.price.toFixed(2)}
-      <button>❌</button>
-    `;
-    item.querySelector("button").addEventListener("click", () => removerDoCarrinho(index));
-    listaCarrinho.appendChild(item);
+  for (var i = 0; i < carrinho.length; i++) {
+    var p = carrinho[i];
+    var artigo = document.createElement("article");
+    artigo.innerHTML = 
+      "<img src='" + p.image + "' alt='" + p.title + "'>" +
+      "<h3>" + p.title + "</h3>" +
+      "<p>" + p.category + "</p>" +
+      "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
+      "<button>❌ Remover</button>";
+
+    (function(index) {
+      artigo.querySelector("button").addEventListener("click", function() {
+        removerDoCarrinho(index);
+      });
+    })(i);
+
+    listaCarrinho.appendChild(artigo);
     total += p.price;
-  });
+  }
 
-  totalElement.textContent = `Total: €${total.toFixed(2)}`;
+  totalElement.textContent = "Total: €" + total.toFixed(2);
+
+  if (carrinho.length > 0) {
+    carrinhoContainer.style.backgroundColor = "#d0f0fd";
+  } else {
+    carrinhoContainer.style.backgroundColor = "transparent";
+  }
 }
+
+
+linkInicio.addEventListener("click", function(e) {
+  e.preventDefault();
+  secInicio.scrollIntoView({ behavior: "smooth" });
+});
+
+linkProdutos.addEventListener("click", function(e) {
+  e.preventDefault();
+  secProdutos.scrollIntoView({ behavior: "smooth" });
+});
+
+linkCarrinho.addEventListener("click", function(e) {
+  e.preventDefault();
+  carrinhoContainer.scrollIntoView({ behavior: "smooth" });
+});
+
 
 mostrarProdutos();

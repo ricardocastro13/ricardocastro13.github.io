@@ -1,40 +1,46 @@
-
 <!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Loja </title>
+  <title>Loja</title>
   <link rel="stylesheet" href="styles.css">
   <script type="module" src="main.js" defer></script>
 </head>
 <body>
-  <header>
-    <h1></h1>Loja </h1>
-    <nav>
-      <ul>
-        <li><a href="#">Início</a></li>
-        <li><a href="#">Produtos</a></li>
-        <li><a href="#">Carrinho</a></li>
-      </ul>
-    </nav>
-  </header>
 
-  <main>
-    <section id="catalogo">
-      <h2>Produtos </h2>
-      <section id="lista-produtos"></section>
-    </section>
+<header>
+  <h1>Loja</h1>
+  <nav>
+    <ul>
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#catalogo">Produtos</a></li>
+      <li><a href="#carrinho">Carrinho</a></li>
+    </ul>
+  </nav>
+</header>
 
-    <aside id="carrinho">
-      <h2>Meu Carrinho</h2>
-      <ul id="lista-carrinho"></ul>
-      <p id="total">Total: €0.00</p>
-    </aside>
-  </main>
+<main>
+  <section id="inicio">
+    <h2>Bem-vindo à Loja!</h2>
+    <p>Aqui você encontra os melhores produtos.</p>
+  </section>
 
-  <footer>
-    <p>&copy; Ricardo castro</p>
-  </footer>
+  <section id="catalogo">
+    <h2>Produtos</h2>
+    <section id="lista-produtos"></section>
+  </section>
+</main>
+
+<aside id="carrinho">
+  <h2>Meu Carrinho</h2>
+  <div id="lista-carrinho"></div>
+  <p id="total">Total: €0.00</p>
+</aside>
+
+<footer>
+  <p>&copy; Ricardo castro</p>
+</footer>
+
 </body>
 </html>
