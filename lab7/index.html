@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loja</title>
+  <link rel="stylesheet" href="styles.css">
+  <script type="module" src="main.js" defer></script>
+</head>
+<body>
+
+<header>
+  <h1>Loja</h1>
+  <nav>
+    <ul>
+      <li><a href="#inicio">Início</a></li>
+      <li><a href="#catalogo">Produtos</a></li>
+      <li><a href="#carrinho">Carrinho</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section id="inicio">
+    <h2>Bem-vindo à Loja!</h2>
+    <p>Aqui você encontra os melhores produtos.</p>
+  </section>
+
+  <section id="catalogo">
+    <h2>Produtos</h2>
+
+    <!-- Filtros -->
+    <div id="filtros">
+      <label for="categoria">Categoria:</label>
+      <select id="categoria">
+        <option value="todos">Todos</option>
+      </select>
+
+      <label for="ordenar">Ordenar por preço:</label>
+      <select id="ordenar">
+        <option value="ascendente">Ascendente</option>
+        <option value="descendente">Descendente</option>
+      </select>
+    </div>
+
+    <!-- Lista de produtos -->
+    <section id="lista-produtos"></section>
+  </section>
+</main>
+
+<aside id="carrinho">
+  <h2>Meu Carrinho</h2>
+  <div id="lista-carrinho"></div>
+  <p id="total">Total: €0.00</p>
+</aside>
+
+<footer>
+  <p>&copy; Ricardo Castro</p>
+</footer>
+
+</body>
+</html>
