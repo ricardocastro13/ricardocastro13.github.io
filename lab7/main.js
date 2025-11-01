@@ -1,151 +1,247 @@
-var listaProdutos = document.getElementById("lista-produtos");
-var listaCarrinho = document.getElementById("lista-carrinho");
-var totalElement = document.getElementById("total");
-var carrinhoContainer = document.getElementById("carrinho");
+// -----------------------
+// CONSTANTES
+// -----------------------
+const API_PRODUTOS = 'https://deisishop.pythonanywhere.com/products';
+const API_CATEGORIAS = 'https://deisishop.pythonanywhere.com/categories';
+const LOCAL_STORAGE_CARRINHO = 'produtos-selecionados';
+const LOCAL_STORAGE_PRODUTOS = 'produtos';
 
-var secInicio = document.getElementById("inicio");
-var secProdutos = document.getElementById("catalogo");
+// -----------------------
+// SELECTORES DO DOM
+// -----------------------
+const SELECT_CATEGORIA = document.querySelector('#categoria');
+const SELECT_ORDENAR = document.querySelector('#ordenar');
+const INPUT_PESQUISA = document.querySelector('#pesquisa');
+const LISTA_PRODUTOS = document.querySelector('#lista-produtos');
+const LISTA_CARRINHO = document.querySelector('#lista-carrinho');
+const TOTAL_CARRINHO = document.querySelector('#total');
+const BTN_COMPRAR = document.querySelector('#buy');
 
-var linkInicio = document.querySelector("nav ul li a[href='#inicio']");
-var linkProdutos = document.querySelector("nav ul li a[href='#catalogo']");
-var linkCarrinho = document.querySelector("nav ul li a[href='#carrinho']");
+// -----------------------
+// INICIALIZAÇÃO
+// -----------------------
+document.addEventListener('DOMContentLoaded', async () => {
+    await carregarProdutosAPI();
+    await carregarCategoriasAPI();
+    atualizarCarrinho();
+    configurarFiltros();
+    iniciarCheckout();
+});
 
-var selectCategoria = document.getElementById("categoria");
-var selectOrdenar = document.getElementById("ordenar");
+// -----------------------
+// LOCAL STORAGE HELPERS
+// -----------------------
+function salvarLS(chave, valor) {
+    localStorage.setItem(chave, JSON.stringify(valor));
+}
 
-var todosProdutos = [];
-var carrinho = [];
+function lerLS(chave) {
+    const data = localStorage.getItem(chave);
+    return data ? JSON.parse(data) : [];
+}
 
-// ===========================
-//  Buscar produtos da API
-// ===========================
+// -----------------------
+// API
+// -----------------------
 async function carregarProdutosAPI() {
-  try {
-    const resposta = await fetch("https://deisishop.pythonanywhere.com/products");
-    const dados = await resposta.json();
-    todosProdutos = dados;
-
-    // Preencher filtro de categorias dinamicamente
-    preencherCategorias();
-
-    mostrarProdutos();
-  } catch (erro) {
-    console.error("Erro ao buscar produtos:", erro);
-    listaProdutos.innerHTML = "<p>Não foi possível carregar os produtos.</p>";
-  }
+    try {
+        const resp = await fetch(API_PRODUTOS);
+        const produtos = await resp.json();
+        salvarLS(LOCAL_STORAGE_PRODUTOS, produtos);
+        mostrarProdutos(produtos);
+    } catch (e) {
+        console.error("Erro ao carregar produtos:", e);
+        alert("Erro ao carregar produtos. Verifique a ligação.");
+    }
 }
 
-// ===========================
-//  Preencher categorias dinâmicas
-// ===========================
-function preencherCategorias() {
-  const categoriasUnicas = [...new Set(todosProdutos.map(p => p.category.toLowerCase()))];
-  selectCategoria.innerHTML = '<option value="todos">Todos</option>';
-
-  categoriasUnicas.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
-    selectCategoria.appendChild(option);
-  });
+async function carregarCategoriasAPI() {
+    try {
+        const resp = await fetch(API_CATEGORIAS);
+        const categorias = await resp.json();
+        mostrarCategorias(categorias);
+    } catch (e) {
+        console.error("Erro ao carregar categorias:", e);
+    }
 }
 
-// ===========================
-//  Mostrar produtos filtrados e ordenados
-// ===========================
-function mostrarProdutos() {
-  var categoria = selectCategoria.value;
-  var ordenar = selectOrdenar.value;
-
-  var filtrados = todosProdutos.slice();
-
-  if (categoria !== "todos") {
-    filtrados = filtrados.filter(p => p.category.toLowerCase() === categoria);
-  }
-
-  if (ordenar === "ascendente") {
-    filtrados.sort((a, b) => a.price - b.price);
-  } else if (ordenar === "descendente") {
-    filtrados.sort((a, b) => b.price - a.price);
-  }
-
-  listaProdutos.innerHTML = "";
-  for (var i = 0; i < filtrados.length; i++) {
-    var p = filtrados[i];
-    var artigo = document.createElement("article");
-    artigo.innerHTML = 
-      "<img src='" + p.image + "' alt='" + p.title + "'>" +
-      "<h3>" + p.title + "</h3>" +
-      "<p>" + p.category + "</p>" +
-      "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
-      "<button>Adicionar ao Carrinho</button>";
-
-    (function(index) {
-      artigo.querySelector("button").addEventListener("click", function() {
-        adicionarAoCarrinho(filtrados[index]);
-      });
-    })(i);
-
-    listaProdutos.appendChild(artigo);
-  }
+// -----------------------
+// RENDERIZAÇÃO
+// -----------------------
+function mostrarCategorias(categorias) {
+    categorias.forEach(cat => {
+        const op = document.createElement('option');
+        op.value = cat;
+        op.textContent = cat;
+        SELECT_CATEGORIA.append(op);
+    });
 }
 
-// ===========================
-//  Carrinho
-// ===========================
+function mostrarProdutos(produtos) {
+    LISTA_PRODUTOS.innerHTML = "";
+    produtos.forEach(prod => {
+        const card = criarCardProduto(prod);
+        LISTA_PRODUTOS.appendChild(card);
+    });
+}
+
+function criarCardProduto(produto) {
+    const card = document.createElement('article');
+    card.classList.add('produto-card');
+    card.innerHTML = `
+        <h3>${produto.title}</h3>
+        <img src="${produto.image}" alt="${produto.title}">
+        <p>${produto.category}</p>
+        <p>€${produto.price}</p>
+        <p>${produto.description}</p>
+    `;
+    card.appendChild(criarBotaoAdicionar(produto));
+    return card;
+}
+
+function criarBotaoAdicionar(produto) {
+    const btn = document.createElement('button');
+    btn.textContent = "+ Adicionar ao cesto";
+    btn.addEventListener('click', () => {
+        adicionarAoCarrinho(produto);
+        atualizarCarrinho();
+    });
+    return btn;
+}
+
+function criarCardCarrinho(produto, index) {
+    const card = document.createElement('article');
+    card.innerHTML = `
+        <h4>${produto.title}</h4>
+        <p>€${produto.price}</p>
+    `;
+    card.appendChild(criarBotaoRemover(index));
+    return card;
+}
+
+function criarBotaoRemover(index) {
+    const btn = document.createElement('button');
+    btn.textContent = "❌ Remover";
+    btn.addEventListener('click', () => {
+        removerDoCarrinho(index);
+    });
+    return btn;
+}
+
+// -----------------------
+// CARRINHO
+// -----------------------
+function getCarrinho() {
+    return lerLS(LOCAL_STORAGE_CARRINHO);
+}
+
 function adicionarAoCarrinho(produto) {
-  carrinho.push(produto);
-  atualizarCarrinho();
+    const cesto = getCarrinho();
+    cesto.push(produto);
+    salvarLS(LOCAL_STORAGE_CARRINHO, cesto);
 }
 
 function removerDoCarrinho(index) {
-  carrinho.splice(index, 1);
-  atualizarCarrinho();
+    const cesto = getCarrinho();
+    cesto.splice(index, 1);
+    salvarLS(LOCAL_STORAGE_CARRINHO, cesto);
+    atualizarCarrinho();
 }
 
 function atualizarCarrinho() {
-  listaCarrinho.innerHTML = "";
-  var total = 0;
+    LISTA_CARRINHO.innerHTML = "";
+    const cesto = getCarrinho();
+    let total = 0;
 
-  for (var i = 0; i < carrinho.length; i++) {
-    var p = carrinho[i];
-    var artigo = document.createElement("article");
-    artigo.innerHTML = 
-      "<img src='" + p.image + "' alt='" + p.title + "'>" +
-      "<h3>" + p.title + "</h3>" +
-      "<p>" + p.category + "</p>" +
-      "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
-      "<button>❌ Remover</button>";
+    cesto.forEach((p, i) => {
+        total += Number(p.price);
+        const card = criarCardCarrinho(p, i);
+        LISTA_CARRINHO.appendChild(card);
+    });
 
-    (function(index) {
-      artigo.querySelector("button").addEventListener("click", function() {
-        removerDoCarrinho(index);
-      });
-    })(i);
-
-    listaCarrinho.appendChild(artigo);
-    total += p.price;
-  }
-
-  totalElement.textContent = "Total: €" + total.toFixed(2);
-
-  carrinhoContainer.style.backgroundColor = (carrinho.length > 0) ? "#d0f0fd" : "transparent";
+    TOTAL_CARRINHO.textContent = "Total: €" + total.toFixed(2);
 }
 
-// ===========================
-//  Navegação suave
-// ===========================
-linkInicio.addEventListener("click", e => { e.preventDefault(); secInicio.scrollIntoView({ behavior: "smooth" }); });
-linkProdutos.addEventListener("click", e => { e.preventDefault(); secProdutos.scrollIntoView({ behavior: "smooth" }); });
-linkCarrinho.addEventListener("click", e => { e.preventDefault(); carrinhoContainer.scrollIntoView({ behavior: "smooth" }); });
+// -----------------------
+// FILTROS
+// -----------------------
+function configurarFiltros() {
+    SELECT_CATEGORIA.addEventListener('change', aplicarFiltros);
+    SELECT_ORDENAR.addEventListener('change', aplicarFiltros);
+    INPUT_PESQUISA.addEventListener('keyup', aplicarFiltros);
+}
 
-// ===========================
-//  Filtros
-// ===========================
-selectCategoria.addEventListener("change", mostrarProdutos);
-selectOrdenar.addEventListener("change", mostrarProdutos);
+function aplicarFiltros() {
+    let produtos = lerLS(LOCAL_STORAGE_PRODUTOS);
+    produtos = filtrarPorCategoria(produtos, SELECT_CATEGORIA.value);
+    produtos = filtrarPorTermo(produtos, INPUT_PESQUISA.value);
+    produtos = ordenarProdutos(produtos, SELECT_ORDENAR.value);
+    mostrarProdutos(produtos);
+}
 
-// ===========================
-//  Inicializar
-// ===========================
-carregarProdutosAPI();
+function filtrarPorCategoria(produtos, categoria) {
+    if (categoria === "todos") return produtos.slice();
+    return produtos.filter(p => p.category === categoria);
+}
+
+function filtrarPorTermo(produtos, termo) {
+    termo = termo.toLowerCase();
+    if (!termo) return produtos;
+    return produtos.filter(p =>
+        p.title.toLowerCase().includes(termo) ||
+        p.description.toLowerCase().includes(termo)
+    );
+}
+
+function ordenarProdutos(produtos, ordem) {
+    const lista = produtos.slice();
+    if (ordem === "ascendente") lista.sort((a, b) => a.price - b.price);
+    if (ordem === "descendente") lista.sort((a, b) => b.price - a.price);
+    return lista;
+}
+
+// -----------------------
+// CHECKOUT COM DESCONTO
+// -----------------------
+function iniciarCheckout() {
+    BTN_COMPRAR.addEventListener('click', async () => {
+        const cesto = getCarrinho();
+        if (!cesto.length) {
+            alert("O cesto está vazio!");
+            return;
+        }
+
+        const ids = cesto.map(p => p.id); // apenas IDs
+        const estudante = document.querySelector('#student-check')?.checked || false;
+        const cupao = document.querySelector('#cupao')?.value.trim() || null;
+        const nome = document.querySelector('#nome')?.value.trim() || "Sem nome";
+
+        const dadosCompra = {
+            products: ids,
+            student: estudante,
+            coupon: cupao,
+            name: nome
+        };
+
+        try {
+            const resp = await fetch('https://deisishop.pythonanywhere.com/buy', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dadosCompra)
+            });
+
+            const resJSON = await resp.json();
+
+            // Limpa carrinho e atualiza UI
+            localStorage.removeItem(LOCAL_STORAGE_CARRINHO);
+            atualizarCarrinho();
+
+            alert(`Compra efetuada com sucesso!
+Referência: ${resJSON.reference}
+Total: €${resJSON.totalCost}`);
+        } catch (e) {
+            console.error(e);
+            alert("Falha ao processar a compra.");
+        }
+    });
+}

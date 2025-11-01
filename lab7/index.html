@@ -41,6 +41,9 @@
         <option value="ascendente">Ascendente</option>
         <option value="descendente">Descendente</option>
       </select>
+
+      <label for="pesquisa">Pesquisar:</label>
+      <input type="text" id="pesquisa" placeholder="Digite o nome do produto...">
     </div>
 
     <!-- Lista de produtos -->
@@ -53,6 +56,24 @@
   <div id="lista-carrinho"></div>
   <p id="total">Total: €0.00</p>
 </aside>
+
+<!-- Checkout -->
+<section id="checkout">
+  <h3>Finalizar Compra</h3>
+  <label>
+    Nome:
+    <input type="text" id="name" placeholder="Seu nome">
+  </label>
+  <label>
+    Cupom:
+    <input type="text" id="cupao" placeholder="Código do cupom">
+  </label>
+  <label>
+    Estudante:
+    <input type="checkbox" id="student-check">
+  </label>
+  <button id="buy">Comprar</button>
+</section>
 
 <footer>
   <p>&copy; Ricardo Castro</p>
