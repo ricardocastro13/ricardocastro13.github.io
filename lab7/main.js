@@ -1,67 +1,67 @@
 // -----------------------
 // CONSTANTES
 // -----------------------
-const API_PRODUTOS = 'https://deisishop.pythonanywhere.com/products';
-const API_CATEGORIAS = 'https://deisishop.pythonanywhere.com/categories';
-const LOCAL_STORAGE_CARRINHO = 'produtos-selecionados';
-const LOCAL_STORAGE_PRODUTOS = 'produtos';
+const API_URL_PRODUTOS = 'https://deisishop.pythonanywhere.com/products';
+const API_URL_CATEGORIAS = 'https://deisishop.pythonanywhere.com/categories';
+const CHAVE_LS_CARRINHO = 'produtos-no-carrinho';
+const CHAVE_LS_PRODUTOS = 'lista-de-produtos';
 
 // -----------------------
 // SELECTORES DO DOM
 // -----------------------
-const SELECT_CATEGORIA = document.querySelector('#categoria');
-const SELECT_ORDENAR = document.querySelector('#ordenar');
-const INPUT_PESQUISA = document.querySelector('#pesquisa');
-const LISTA_PRODUTOS = document.querySelector('#lista-produtos');
-const LISTA_CARRINHO = document.querySelector('#lista-carrinho');
-const TOTAL_CARRINHO = document.querySelector('#total');
-const BTN_COMPRAR = document.querySelector('#buy');
+const selectCategoria = document.querySelector('#categoria');
+const selectOrdenar = document.querySelector('#ordenar');
+const inputPesquisa = document.querySelector('#pesquisa');
+const listaProdutosElement = document.querySelector('#lista-produtos');
+const listaCarrinhoElement = document.querySelector('#lista-carrinho');
+const totalCarrinhoElement = document.querySelector('#total');
+const btnComprar = document.querySelector('#buy');
 
 // -----------------------
 // INICIALIZAÇÃO
 // -----------------------
 document.addEventListener('DOMContentLoaded', async () => {
-    await carregarProdutosAPI();
-    await carregarCategoriasAPI();
+    await carregarProdutosDaAPI();
+    await carregarCategoriasDaAPI();
     atualizarCarrinho();
     configurarFiltros();
-    iniciarCheckout();
+    configurarCheckout();
 });
 
 // -----------------------
 // LOCAL STORAGE HELPERS
 // -----------------------
-function salvarLS(chave, valor) {
+function salvarNoLocalStorage(chave, valor) {
     localStorage.setItem(chave, JSON.stringify(valor));
 }
 
-function lerLS(chave) {
-    const data = localStorage.getItem(chave);
-    return data ? JSON.parse(data) : [];
+function lerDoLocalStorage(chave) {
+    const dados = localStorage.getItem(chave);
+    return dados ? JSON.parse(dados) : [];
 }
 
 // -----------------------
 // API
 // -----------------------
-async function carregarProdutosAPI() {
+async function carregarProdutosDaAPI() {
     try {
-        const resp = await fetch(API_PRODUTOS);
-        const produtos = await resp.json();
-        salvarLS(LOCAL_STORAGE_PRODUTOS, produtos);
+        const resposta = await fetch(API_URL_PRODUTOS);
+        const produtos = await resposta.json();
+        salvarNoLocalStorage(CHAVE_LS_PRODUTOS, produtos);
         mostrarProdutos(produtos);
-    } catch (e) {
-        console.error("Erro ao carregar produtos:", e);
+    } catch (erro) {
+        console.error("Erro ao carregar produtos:", erro);
         alert("Erro ao carregar produtos. Verifique a ligação.");
     }
 }
 
-async function carregarCategoriasAPI() {
+async function carregarCategoriasDaAPI() {
     try {
-        const resp = await fetch(API_CATEGORIAS);
-        const categorias = await resp.json();
+        const resposta = await fetch(API_URL_CATEGORIAS);
+        const categorias = await resposta.json();
         mostrarCategorias(categorias);
-    } catch (e) {
-        console.error("Erro ao carregar categorias:", e);
+    } catch (erro) {
+        console.error("Erro ao carregar categorias:", erro);
     }
 }
 
@@ -69,19 +69,19 @@ async function carregarCategoriasAPI() {
 // RENDERIZAÇÃO
 // -----------------------
 function mostrarCategorias(categorias) {
-    categorias.forEach(cat => {
-        const op = document.createElement('option');
-        op.value = cat;
-        op.textContent = cat;
-        SELECT_CATEGORIA.append(op);
+    categorias.forEach(categoria => {
+        const opcao = document.createElement('option');
+        opcao.value = categoria;
+        opcao.textContent = categoria;
+        selectCategoria.append(opcao);
     });
 }
 
 function mostrarProdutos(produtos) {
-    LISTA_PRODUTOS.innerHTML = "";
-    produtos.forEach(prod => {
-        const card = criarCardProduto(prod);
-        LISTA_PRODUTOS.appendChild(card);
+    listaProdutosElement.innerHTML = "";
+    produtos.forEach(produto => {
+        const cardProduto = criarCardProduto(produto);
+        listaProdutosElement.appendChild(cardProduto);
     });
 }
 
@@ -100,13 +100,13 @@ function criarCardProduto(produto) {
 }
 
 function criarBotaoAdicionar(produto) {
-    const btn = document.createElement('button');
-    btn.textContent = "+ Adicionar ao cesto";
-    btn.addEventListener('click', () => {
-        adicionarAoCarrinho(produto);
+    const botao = document.createElement('button');
+    botao.textContent = "+ Adicionar ao carrinho";
+    botao.addEventListener('click', () => {
+        adicionarProdutoAoCarrinho(produto);
         atualizarCarrinho();
     });
-    return btn;
+    return botao;
 }
 
 function criarCardCarrinho(produto, index) {
@@ -120,68 +120,68 @@ function criarCardCarrinho(produto, index) {
 }
 
 function criarBotaoRemover(index) {
-    const btn = document.createElement('button');
-    btn.textContent = "❌ Remover";
-    btn.addEventListener('click', () => {
-        removerDoCarrinho(index);
+    const botao = document.createElement('button');
+    botao.textContent = "❌ Remover";
+    botao.addEventListener('click', () => {
+        removerProdutoDoCarrinho(index);
     });
-    return btn;
+    return botao;
 }
 
 // -----------------------
 // CARRINHO
 // -----------------------
-function getCarrinho() {
-    return lerLS(LOCAL_STORAGE_CARRINHO);
+function obterCarrinho() {
+    return lerDoLocalStorage(CHAVE_LS_CARRINHO);
 }
 
-function adicionarAoCarrinho(produto) {
-    const cesto = getCarrinho();
-    cesto.push(produto);
-    salvarLS(LOCAL_STORAGE_CARRINHO, cesto);
+function adicionarProdutoAoCarrinho(produto) {
+    const carrinho = obterCarrinho();
+    carrinho.push(produto);
+    salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho);
 }
 
-function removerDoCarrinho(index) {
-    const cesto = getCarrinho();
-    cesto.splice(index, 1);
-    salvarLS(LOCAL_STORAGE_CARRINHO, cesto);
+function removerProdutoDoCarrinho(index) {
+    const carrinho = obterCarrinho();
+    carrinho.splice(index, 1);
+    salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho);
     atualizarCarrinho();
 }
 
 function atualizarCarrinho() {
-    LISTA_CARRINHO.innerHTML = "";
-    const cesto = getCarrinho();
+    listaCarrinhoElement.innerHTML = "";
+    const carrinho = obterCarrinho();
     let total = 0;
 
-    cesto.forEach((p, i) => {
-        total += Number(p.price);
-        const card = criarCardCarrinho(p, i);
-        LISTA_CARRINHO.appendChild(card);
+    carrinho.forEach((produto, i) => {
+        total += Number(produto.price);
+        const card = criarCardCarrinho(produto, i);
+        listaCarrinhoElement.appendChild(card);
     });
 
-    TOTAL_CARRINHO.textContent = "Total: €" + total.toFixed(2);
+    totalCarrinhoElement.textContent = "Total: €" + total.toFixed(2);
 }
 
 // -----------------------
 // FILTROS
 // -----------------------
 function configurarFiltros() {
-    SELECT_CATEGORIA.addEventListener('change', aplicarFiltros);
-    SELECT_ORDENAR.addEventListener('change', aplicarFiltros);
-    INPUT_PESQUISA.addEventListener('keyup', aplicarFiltros);
+    selectCategoria.addEventListener('change', aplicarFiltros);
+    selectOrdenar.addEventListener('change', aplicarFiltros);
+    inputPesquisa.addEventListener('keyup', aplicarFiltros);
 }
 
 function aplicarFiltros() {
-    let produtos = lerLS(LOCAL_STORAGE_PRODUTOS);
-    produtos = filtrarPorCategoria(produtos, SELECT_CATEGORIA.value);
-    produtos = filtrarPorTermo(produtos, INPUT_PESQUISA.value);
-    produtos = ordenarProdutos(produtos, SELECT_ORDENAR.value);
+    let produtos = lerDoLocalStorage(CHAVE_LS_PRODUTOS);
+    produtos = filtrarPorCategoria(produtos, selectCategoria.value);
+    produtos = filtrarPorTermo(produtos, inputPesquisa.value);
+    produtos = ordenarProdutos(produtos, selectOrdenar.value);
     mostrarProdutos(produtos);
 }
 
-function filtrarPorCategoria(produtos, categoria) {
-    if (categoria === "todos") return produtos.slice();
-    return produtos.filter(p => p.category === categoria);
+function filtrarPorCategoria(produtos, categoriaSelecionada) {
+    if (categoriaSelecionada === "todos") return produtos.slice();
+    return produtos.filter(p => p.category === categoriaSelecionada);
 }
 
 function filtrarPorTermo(produtos, termo) {
@@ -193,54 +193,54 @@ function filtrarPorTermo(produtos, termo) {
     );
 }
 
-function ordenarProdutos(produtos, ordem) {
-    const lista = produtos.slice();
-    if (ordem === "ascendente") lista.sort((a, b) => a.price - b.price);
-    if (ordem === "descendente") lista.sort((a, b) => b.price - a.price);
-    return lista;
+function ordenarProdutos(produtos, ordemSelecionada) {
+    const listaOrdenada = produtos.slice();
+    if (ordemSelecionada === "ascendente") listaOrdenada.sort((a, b) => a.price - b.price);
+    if (ordemSelecionada === "descendente") listaOrdenada.sort((a, b) => b.price - a.price);
+    return listaOrdenada;
 }
 
 // -----------------------
-// CHECKOUT COM DESCONTO
+// CHECKOUT
 // -----------------------
-function iniciarCheckout() {
-    BTN_COMPRAR.addEventListener('click', async () => {
-        const cesto = getCarrinho();
-        if (!cesto.length) {
-            alert("O cesto está vazio!");
+function configurarCheckout() {
+    btnComprar.addEventListener('click', async () => {
+        const carrinho = obterCarrinho();
+        if (!carrinho.length) {
+            alert("O carrinho está vazio!");
             return;
         }
 
-        const ids = cesto.map(p => p.id); // apenas IDs
+        const idsProdutos = carrinho.map(p => p.id);
         const estudante = document.querySelector('#student-check')?.checked || false;
-        const cupao = document.querySelector('#cupao')?.value.trim() || null;
-        const nome = document.querySelector('#nome')?.value.trim() || "Sem nome";
+        const codigoCupao = document.querySelector('#cupao')?.value.trim() || null;
+        const nomeCliente = document.querySelector('#nome')?.value.trim() || "Sem nome";
 
         const dadosCompra = {
-            products: ids,
+            products: idsProdutos,
             student: estudante,
-            coupon: cupao,
-            name: nome
+            coupon: codigoCupao,
+            name: nomeCliente
         };
 
         try {
-            const resp = await fetch('https://deisishop.pythonanywhere.com/buy', {
+            const resposta = await fetch('https://deisishop.pythonanywhere.com/buy', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(dadosCompra)
             });
 
-            const resJSON = await resp.json();
+            const resultado = await resposta.json();
 
-            // Limpa carrinho e atualiza UI
-            localStorage.removeItem(LOCAL_STORAGE_CARRINHO);
+            // Limpa o carrinho e atualiza UI
+            localStorage.removeItem(CHAVE_LS_CARRINHO);
             atualizarCarrinho();
 
             alert(`Compra efetuada com sucesso!
-Referência: ${resJSON.reference}
-Total: €${resJSON.totalCost}`);
-        } catch (e) {
-            console.error(e);
+Referência: ${resultado.reference}
+Total: €${resultado.totalCost}`);
+        } catch (erro) {
+            console.error(erro);
             alert("Falha ao processar a compra.");
         }
     });
