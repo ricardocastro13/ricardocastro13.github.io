@@ -1,14 +1,9 @@
-// -----------------------
-// CONSTANTES
-// -----------------------
+
 const API_URL_PRODUTOS = 'https://deisishop.pythonanywhere.com/products';
 const API_URL_CATEGORIAS = 'https://deisishop.pythonanywhere.com/categories';
 const CHAVE_LS_CARRINHO = 'produtos-no-carrinho';
 const CHAVE_LS_PRODUTOS = 'lista-de-produtos';
 
-// -----------------------
-// SELECTORES DO DOM
-// -----------------------
 const selectCategoria = document.querySelector('#categoria');
 const selectOrdenar = document.querySelector('#ordenar');
 const inputPesquisa = document.querySelector('#pesquisa');
@@ -17,9 +12,7 @@ const listaCarrinhoElement = document.querySelector('#lista-carrinho');
 const totalCarrinhoElement = document.querySelector('#total');
 const btnComprar = document.querySelector('#buy');
 
-// -----------------------
-// INICIALIZAÇÃO
-// -----------------------
+
 document.addEventListener('DOMContentLoaded', async () => {
     await carregarProdutosDaAPI();
     await carregarCategoriasDaAPI();
@@ -28,9 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     configurarCheckout();
 });
 
-// -----------------------
-// LOCAL STORAGE HELPERS
-// -----------------------
+
 function salvarNoLocalStorage(chave, valor) {
     localStorage.setItem(chave, JSON.stringify(valor));
 }
@@ -40,9 +31,7 @@ function lerDoLocalStorage(chave) {
     return dados ? JSON.parse(dados) : [];
 }
 
-// -----------------------
-// API
-// -----------------------
+
 async function carregarProdutosDaAPI() {
     try {
         const resposta = await fetch(API_URL_PRODUTOS);
@@ -65,9 +54,7 @@ async function carregarCategoriasDaAPI() {
     }
 }
 
-// -----------------------
-// RENDERIZAÇÃO
-// -----------------------
+
 function mostrarCategorias(categorias) {
     categorias.forEach(categoria => {
         const opcao = document.createElement('option');
@@ -128,9 +115,7 @@ function criarBotaoRemover(index) {
     return botao;
 }
 
-// -----------------------
-// CARRINHO
-// -----------------------
+
 function obterCarrinho() {
     return lerDoLocalStorage(CHAVE_LS_CARRINHO);
 }
@@ -162,9 +147,7 @@ function atualizarCarrinho() {
     totalCarrinhoElement.textContent = "Total: €" + total.toFixed(2);
 }
 
-// -----------------------
-// FILTROS
-// -----------------------
+
 function configurarFiltros() {
     selectCategoria.addEventListener('change', aplicarFiltros);
     selectOrdenar.addEventListener('change', aplicarFiltros);
@@ -200,9 +183,7 @@ function ordenarProdutos(produtos, ordemSelecionada) {
     return listaOrdenada;
 }
 
-// -----------------------
-// CHECKOUT
-// -----------------------
+
 function configurarCheckout() {
     btnComprar.addEventListener('click', async () => {
         const carrinho = obterCarrinho();
@@ -232,7 +213,7 @@ function configurarCheckout() {
 
             const resultado = await resposta.json();
 
-            // Limpa o carrinho e atualiza UI
+           
             localStorage.removeItem(CHAVE_LS_CARRINHO);
             atualizarCarrinho();
 
