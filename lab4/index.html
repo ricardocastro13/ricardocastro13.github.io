@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
@@ -7,24 +7,41 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <header>
-    <h1 id="titulo">Olá!</h1>
-  </header>
+  <h1 id="titulo">Painel</h1>
 
-  <main>
-    <p>A minha pgina  </p>
+<section id="botoes">
+  <button id="btnClick">Click</button>
+  <button id="btnDbl">Duplo</button>
+  <button id="btnHover">Hover</button>
+</section>
 
-    <button onclick="saudar()">Saudação</button>
-    <button onclick="mudarTexto()">Mudar Texto</button>
-    <button ondblclick="mudarCor()">Duplo Clique</button>
-    <button onmouseover="destacar()" onmouseout="retirarDestaque()">Passar Rato</button>
-    <button onclick="contar()">Contar</button>
+<p id="estado">Estado: pronto</p>
+<p id="contador">Cliques: 0</p>
 
-    <h2 id="contador">Contador: 0</h2>
-    <p id="mensagem"></p>
-  </main>
+<hr>
 
+<label>
+  Nome:
+  <input id="nome" type="text" placeholder="escreve o nome">
+</label>
+<p id="preview">Olá, ...</p>
 
+<label>
+  Cor:
+  <select id="cor">
+    <option value="">-- escolhe --</option>
+    <option value="red">Vermelho</option>
+    <option value="blue">Azul</option>
+    <option value="green">Verde</option>
+  </select>
+</label>
+
+<hr>
+
+<div id="area" style="width:320px;height:160px;border:2px solid #000;margin-top:10px;"></div>
+<p id="coords">x: -, y: -</p>
+
+<p id="teclas">Última tecla: nenhuma</p>
   <script src="main.js"></script>
 </body>
 </html>

@@ -1,85 +1,81 @@
-document.addEventListener('DOMContentLoaded', () => {
+let tarefas = []
 
-  const passa = document.querySelector('#passa');
-  const mensagem = document.querySelector('#mensagem');
+const txt = document.querySelector("#txt")
+const add = document.querySelector("#add")
+const filtro = document.querySelector("#filtro")
+const ordenar = document.querySelector("#ordenar")
+const lista = document.querySelector("#lista")
+const info = document.querySelector("#info")
 
-  passa.addEventListener('mouseover', () => {
-    mensagem.textContent = 'Olá! Passaste aqui ';
-  });
+function render() {
+  lista.innerHTML = ""
 
-  passa.addEventListener('mouseout', () => {
-    mensagem.textContent = 'Texto original';
-  });
+  let mostrar = tarefas.slice()
 
-  const pinta = document.querySelector('#pinta');
-
-  document.querySelectorAll('button[data-color]').forEach(button => {
-    button.addEventListener('click', () => {
-      const cor = button.dataset.color;
-      pinta.style.color = cor;
-      pinta.textContent = `Agora estou ${cor}`;
-    });
-  });
-
-  const caixaTexto = document.querySelector('#caixaTexto');
-  const cores = ['lightblue', 'lightgreen', 'lightpink', 'khaki', 'lavender'];
-  let indiceCor = 0;
-
-  caixaTexto.addEventListener('keyup', () => {
-    document.body.style.backgroundColor = cores[indiceCor];
-    indiceCor = (indiceCor + 1) % cores.length;
-  });
-
-  const seletor = document.querySelector('#seletor');
-  seletor.addEventListener('change', function() {
-    if (this.value) {
-      document.body.style.backgroundColor = this.value;
-    }
-  });
-
-
-  const contadorElem = document.querySelector('#contador');
-  const btnConta = document.querySelector('#btnConta');
-  let contador = Number(localStorage.getItem('contador')) || 0;
-  contadorElem.textContent = contador;
-
-  let intervalo = null;
-
-  function count() {
-    contador++;
-    contadorElem.textContent = contador;
-    localStorage.setItem('contador', contador);
+  if (filtro.value === "feitas") {
+    mostrar = mostrar.filter(function (t) {
+      return t.feita === true
+    })
   }
 
-  btnConta.addEventListener('click', () => {
-    if (!intervalo) {
-      
-      intervalo = setInterval(count, 1000);
-      btnConta.textContent = 'Parar Contador';
-    } else {
-      
-      clearInterval(intervalo);
-      intervalo = null;
-      btnConta.textContent = 'Iniciar Contador';
-    }
-  });
+  if (filtro.value === "porfazer") {
+    mostrar = mostrar.filter(function (t) {
+      return t.feita === false
+    })
+  }
 
-  const nomeInput = document.querySelector('#nome');
-  const idadeInput = document.querySelector('#idade');
-  const btnMostrar = document.querySelector('#btnMostrar');
-  const frase = document.querySelector('#frase');
+  for (let i = 0; i < mostrar.length; i++) {
+    const li = document.createElement("li")
+    li.textContent = mostrar[i].texto + " "
 
-  btnMostrar.addEventListener('click', () => {
-    const nome = nomeInput.value.trim();
-    const idade = idadeInput.value.trim();
+    const btn = document.createElement("button")
+    btn.textContent = mostrar[i].feita ? "Desfazer" : "Feita"
 
-    if (!nome || !idade) {
-      frase.textContent = 'Por favor, preenche o nome e a idade.';
-      frase.style.color = 'red';
-    } else {
-      frase.style.color = 'black';
-      frase.textContent = `Olá ${nome}! Tens ${idade} anos.`;
-    }
-  });
+    btn.onclick = (function (textoTarefa) {
+      return function () {
+        for (let j = 0; j < tarefas.length; j++) {
+          if (tarefas[j].texto === textoTarefa) {
+            tarefas[j].feita = !tarefas[j].feita
+            break
+          }
+        }
+        render()
+      }
+    })(mostrar[i].texto)
 
-});
+    li.appendChild(btn)
+    lista.appendChild(li)
+  }
+
+  let feitas = 0
+  for (let i = 0; i < tarefas.length; i++) {
+    if (tarefas[i].feita) feitas = feitas + 1
+  }
+
+  info.textContent = "Total: " + tarefas.length + " | Feitas: " + feitas
+}
+
+add.onclick = function () {
+  const texto = txt.value
+
+  if (texto === "") return
+
+  tarefas.push({ texto: texto, feita: false })
+  txt.value = ""
+  render()
+}
+
+filtro.onchange = function () {
+  render()
+}
+
+ordenar.onclick = function () {
+  tarefas.sort(function (a, b) {
+    if (a.texto.toLowerCase() < b.texto.toLowerCase()) return -1
+    if (a.texto.toLowerCase() > b.texto.toLowerCase()) return 1
+    return 0
+  })
+  render()
+}
+
+render()

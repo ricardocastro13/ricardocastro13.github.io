@@ -1,3 +1,6 @@
+
+
+
 import { produtos } from "./produtos.js";
 import { produtos as produtos2 } from "./produtos2.js";
 
@@ -18,24 +21,24 @@ var todosProdutos = produtos.concat(produtos2);
 
 
 function mostrarProdutos() {
-  listaProdutos.innerHTML = "";
-  for (var i = 0; i < todosProdutos.length; i++) {
-    var p = todosProdutos[i];
-    var artigo = document.createElement("article");
-    artigo.innerHTML = 
+  listaProdutos.innerHTML = ""
+
+  for (let i = 0; i < todosProdutos.length; i++) {
+    const p = todosProdutos[i]
+    const artigo = document.createElement("article")
+
+    artigo.innerHTML =
       "<img src='" + p.image + "' alt='" + p.title + "'>" +
       "<h3>" + p.title + "</h3>" +
       "<p>" + p.category + "</p>" +
       "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
-      "<button>Adicionar ao Carrinho</button>";
-    
-    (function(index) {
-      artigo.querySelector("button").addEventListener("click", function() {
-        adicionarAoCarrinho(todosProdutos[index]);
-      });
-    })(i);
+      "<button>Adicionar ao Carrinho</button>"
 
-    listaProdutos.appendChild(artigo);
+    artigo.querySelector("button").onclick = function () {
+      adicionarAoCarrinho(todosProdutos[i])
+    }
+
+    listaProdutos.appendChild(artigo)
   }
 }
 
@@ -53,38 +56,36 @@ function removerDoCarrinho(index) {
 
 
 function atualizarCarrinho() {
-  listaCarrinho.innerHTML = "";
-  var total = 0;
+  listaCarrinho.innerHTML = ""
+  let total = 0
 
-  for (var i = 0; i < carrinho.length; i++) {
-    var p = carrinho[i];
-    var artigo = document.createElement("article");
-    artigo.innerHTML = 
+  for (let i = 0; i < carrinho.length; i++) {
+    const p = carrinho[i]
+    const artigo = document.createElement("article")
+
+    artigo.innerHTML =
       "<img src='" + p.image + "' alt='" + p.title + "'>" +
       "<h3>" + p.title + "</h3>" +
       "<p>" + p.category + "</p>" +
       "<p><strong>€" + p.price.toFixed(2) + "</strong></p>" +
-      "<button>❌ Remover</button>";
+      "<button>❌ Remover</button>"
 
-    (function(index) {
-      artigo.querySelector("button").addEventListener("click", function() {
-        removerDoCarrinho(index);
-      });
-    })(i);
+    artigo.querySelector("button").onclick = function () {
+      removerDoCarrinho(i)
+    }
 
-    listaCarrinho.appendChild(artigo);
-    total += p.price;
+    listaCarrinho.appendChild(artigo)
+    total = total + p.price
   }
 
-  totalElement.textContent = "Total: €" + total.toFixed(2);
+  totalElement.textContent = "Total: €" + total.toFixed(2)
 
   if (carrinho.length > 0) {
-    carrinhoContainer.style.backgroundColor = "#d0f0fd";
+    carrinhoContainer.style.backgroundColor = "#d0f0fd"
   } else {
-    carrinhoContainer.style.backgroundColor = "transparent";
+    carrinhoContainer.style.backgroundColor = "transparent"
   }
 }
-
 
 linkInicio.addEventListener("click", function(e) {
   e.preventDefault();

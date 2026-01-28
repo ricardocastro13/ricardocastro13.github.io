@@ -1,41 +1,48 @@
-let contador = 0;
+let somar = 0
+const mensagem = document.querySelector("#mensagem")
+const contador = document.querySelector("#contador")
 
-
-function saudar() {
-  alert("Olaa!");
+function saudar(){
+  alert("ola")
 }
 
-function mudarTexto() {
-  const titulo = document.querySelector("#titulo");
-  if (titulo.textContent === "Olá!") {
-    titulo.textContent = "xau!";
-    titulo.style.color = "green";
-  } else {
-    titulo.textContent = "Olá!";
-    titulo.style.color = "black";
+function mudarTexto(){
+  const titulo = document.querySelector("#titulo")
+
+if(titulo.textContent === "Olá!"){
+
+  titulo.textContent = "Xau!"
+} else{
+  titulo.textContent = "Olá!"
+}
+}
+
+function mudarCor(){
+  
+
+  if(document.body.style.backgroundColor=== "red"){
+    document.body.style.backgroundColor = "blue"
+  } else{
+    document.body.style.backgroundColor = "red"
   }
 }
 
 
-function mudarCor() {
-  document.body.style.backgroundColor = "lightblue";
+function destacar(){
+  
+  mensagem.textContent = "estas com o rato em cima "
+
+}
+function retirarDestaque(){
+
+  mensagem.textContent = "saiste"
+
 }
 
+function contar(){
 
-function destacar() {
-  const msg = document.querySelector("#mensagem");
-  msg.textContent = "Estás com o rato sobre o botão!";
-}
+  somar = somar+1
 
+  contador.textContent = "contador: "+ somar
 
-function retirarDestaque() {
-  const msg = document.querySelector("#mensagem");
-  msg.textContent = "O rato saiu do botão";
-}
-
-
-function contar() {
-  contador++;
-  const texto = document.querySelector("#contador");
-  texto.textContent = "Contador: " + contador;
 }

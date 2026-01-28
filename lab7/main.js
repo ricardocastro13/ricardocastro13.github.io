@@ -1,228 +1,272 @@
+const API_URL_PRODUTOS = "https://deisishop.pythonanywhere.com/products"
+const API_URL_CATEGORIAS = "https://deisishop.pythonanywhere.com/categories"
+const CHAVE_LS_CARRINHO = "produtos-no-carrinho"
+const CHAVE_LS_PRODUTOS = "lista-de-produtos"
 
-const API_URL_PRODUTOS = 'https://deisishop.pythonanywhere.com/products';
-const API_URL_CATEGORIAS = 'https://deisishop.pythonanywhere.com/categories';
-const CHAVE_LS_CARRINHO = 'produtos-no-carrinho';
-const CHAVE_LS_PRODUTOS = 'lista-de-produtos';
+const selectCategoria = document.querySelector("#categoria")
+const selectOrdenar = document.querySelector("#ordenar")
+const inputPesquisa = document.querySelector("#pesquisa")
+const listaProdutosElement = document.querySelector("#lista-produtos")
+const listaCarrinhoElement = document.querySelector("#lista-carrinho")
+const totalCarrinhoElement = document.querySelector("#total")
+const btnComprar = document.querySelector("#buy")
 
-const selectCategoria = document.querySelector('#categoria');
-const selectOrdenar = document.querySelector('#ordenar');
-const inputPesquisa = document.querySelector('#pesquisa');
-const listaProdutosElement = document.querySelector('#lista-produtos');
-const listaCarrinhoElement = document.querySelector('#lista-carrinho');
-const totalCarrinhoElement = document.querySelector('#total');
-const btnComprar = document.querySelector('#buy');
+document.addEventListener("DOMContentLoaded", function () {
+  iniciar()
+})
 
-
-document.addEventListener('DOMContentLoaded', async () => {
-    await carregarProdutosDaAPI();
-    await carregarCategoriasDaAPI();
-    atualizarCarrinho();
-    configurarFiltros();
-    configurarCheckout();
-});
-
+async function iniciar() {
+  await carregarProdutosDaAPI()
+  await carregarCategoriasDaAPI()
+  atualizarCarrinho()
+  configurarFiltros()
+  configurarCheckout()
+}
 
 function salvarNoLocalStorage(chave, valor) {
-    localStorage.setItem(chave, JSON.stringify(valor));
+  localStorage.setItem(chave, JSON.stringify(valor))
 }
 
 function lerDoLocalStorage(chave) {
-    const dados = localStorage.getItem(chave);
-    return dados ? JSON.parse(dados) : [];
+  const dados = localStorage.getItem(chave)
+  if (dados) return JSON.parse(dados)
+  return []
 }
 
-
 async function carregarProdutosDaAPI() {
-    try {
-        const resposta = await fetch(API_URL_PRODUTOS);
-        const produtos = await resposta.json();
-        salvarNoLocalStorage(CHAVE_LS_PRODUTOS, produtos);
-        mostrarProdutos(produtos);
-    } catch (erro) {
-        console.error("Erro ao carregar produtos:", erro);
-        alert("Erro ao carregar produtos. Verifique a ligação.");
-    }
+  try {
+    const resposta = await fetch(API_URL_PRODUTOS)
+    const produtos = await resposta.json()
+    salvarNoLocalStorage(CHAVE_LS_PRODUTOS, produtos)
+    mostrarProdutos(produtos)
+  } catch (erro) {
+    alert("Erro ao carregar produtos. Verifique a ligação.")
+  }
 }
 
 async function carregarCategoriasDaAPI() {
-    try {
-        const resposta = await fetch(API_URL_CATEGORIAS);
-        const categorias = await resposta.json();
-        mostrarCategorias(categorias);
-    } catch (erro) {
-        console.error("Erro ao carregar categorias:", erro);
-    }
+  try {
+    const resposta = await fetch(API_URL_CATEGORIAS)
+    const categorias = await resposta.json()
+    mostrarCategorias(categorias)
+  } catch (erro) {}
 }
 
-
 function mostrarCategorias(categorias) {
-    categorias.forEach(categoria => {
-        const opcao = document.createElement('option');
-        opcao.value = categoria;
-        opcao.textContent = categoria;
-        selectCategoria.append(opcao);
-    });
+  for (let i = 0; i < categorias.length; i++) {
+    const opcao = document.createElement("option")
+    opcao.value = categorias[i]
+    opcao.textContent = categorias[i]
+    selectCategoria.appendChild(opcao)
+  }
 }
 
 function mostrarProdutos(produtos) {
-    listaProdutosElement.innerHTML = "";
-    produtos.forEach(produto => {
-        const cardProduto = criarCardProduto(produto);
-        listaProdutosElement.appendChild(cardProduto);
-    });
+  listaProdutosElement.innerHTML = ""
+
+  for (let i = 0; i < produtos.length; i++) {
+    const cardProduto = criarCardProduto(produtos[i])
+    listaProdutosElement.appendChild(cardProduto)
+  }
 }
 
 function criarCardProduto(produto) {
-    const card = document.createElement('article');
-    card.classList.add('produto-card');
-    card.innerHTML = `
-        <h3>${produto.title}</h3>
-        <img src="${produto.image}" alt="${produto.title}">
-        <p>${produto.category}</p>
-        <p>€${produto.price}</p>
-        <p>${produto.description}</p>
-    `;
-    card.appendChild(criarBotaoAdicionar(produto));
-    return card;
-}
+  const card = document.createElement("article")
+  card.className = "produto-card"
 
-function criarBotaoAdicionar(produto) {
-    const botao = document.createElement('button');
-    botao.textContent = "+ Adicionar ao carrinho";
-    botao.addEventListener('click', () => {
-        adicionarProdutoAoCarrinho(produto);
-        atualizarCarrinho();
-    });
-    return botao;
-}
+  const h3 = document.createElement("h3")
+  h3.textContent = produto.title
 
-function criarCardCarrinho(produto, index) {
-    const card = document.createElement('article');
-    card.innerHTML = `
-        <h4>${produto.title}</h4>
-        <p>€${produto.price}</p>
-    `;
-    card.appendChild(criarBotaoRemover(index));
-    return card;
-}
+  const img = document.createElement("img")
+  img.src = produto.image
+  img.alt = produto.title
 
-function criarBotaoRemover(index) {
-    const botao = document.createElement('button');
-    botao.textContent = "❌ Remover";
-    botao.addEventListener('click', () => {
-        removerProdutoDoCarrinho(index);
-    });
-    return botao;
-}
+  const cat = document.createElement("p")
+  cat.textContent = produto.category
 
+  const preco = document.createElement("p")
+  preco.textContent = "€" + Number(produto.price).toFixed(2)
+
+  const desc = document.createElement("p")
+  desc.textContent = produto.description
+
+  const botao = document.createElement("button")
+  botao.textContent = "+ Adicionar ao carrinho"
+  botao.onclick = function () {
+    adicionarProdutoAoCarrinho(produto)
+    atualizarCarrinho()
+  }
+
+  card.appendChild(h3)
+  card.appendChild(img)
+  card.appendChild(cat)
+  card.appendChild(preco)
+  card.appendChild(desc)
+  card.appendChild(botao)
+
+  return card
+}
 
 function obterCarrinho() {
-    return lerDoLocalStorage(CHAVE_LS_CARRINHO);
+  return lerDoLocalStorage(CHAVE_LS_CARRINHO)
 }
 
 function adicionarProdutoAoCarrinho(produto) {
-    const carrinho = obterCarrinho();
-    carrinho.push(produto);
-    salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho);
+  const carrinho = obterCarrinho()
+  carrinho.push(produto)
+  salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho)
 }
 
 function removerProdutoDoCarrinho(index) {
-    const carrinho = obterCarrinho();
-    carrinho.splice(index, 1);
-    salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho);
-    atualizarCarrinho();
+  const carrinho = obterCarrinho()
+  carrinho.splice(index, 1)
+  salvarNoLocalStorage(CHAVE_LS_CARRINHO, carrinho)
+  atualizarCarrinho()
 }
 
 function atualizarCarrinho() {
-    listaCarrinhoElement.innerHTML = "";
-    const carrinho = obterCarrinho();
-    let total = 0;
+  listaCarrinhoElement.innerHTML = ""
+  const carrinho = obterCarrinho()
+  let total = 0
 
-    carrinho.forEach((produto, i) => {
-        total += Number(produto.price);
-        const card = criarCardCarrinho(produto, i);
-        listaCarrinhoElement.appendChild(card);
-    });
+  for (let i = 0; i < carrinho.length; i++) {
+    const produto = carrinho[i]
+    total = total + Number(produto.price)
 
-    totalCarrinhoElement.textContent = "Total: €" + total.toFixed(2);
+    const card = document.createElement("article")
+
+    const h4 = document.createElement("h4")
+    h4.textContent = produto.title
+
+    const p = document.createElement("p")
+    p.textContent = "€" + Number(produto.price).toFixed(2)
+
+    const botao = document.createElement("button")
+    botao.textContent = "❌ Remover"
+    botao.onclick = (function (idx) {
+      return function () {
+        removerProdutoDoCarrinho(idx)
+      }
+    })(i)
+
+    card.appendChild(h4)
+    card.appendChild(p)
+    card.appendChild(botao)
+
+    listaCarrinhoElement.appendChild(card)
+  }
+
+  totalCarrinhoElement.textContent = "Total: €" + total.toFixed(2)
 }
 
-
 function configurarFiltros() {
-    selectCategoria.addEventListener('change', aplicarFiltros);
-    selectOrdenar.addEventListener('change', aplicarFiltros);
-    inputPesquisa.addEventListener('keyup', aplicarFiltros);
+  selectCategoria.onchange = aplicarFiltros
+  selectOrdenar.onchange = aplicarFiltros
+  inputPesquisa.onkeyup = aplicarFiltros
 }
 
 function aplicarFiltros() {
-    let produtos = lerDoLocalStorage(CHAVE_LS_PRODUTOS);
-    produtos = filtrarPorCategoria(produtos, selectCategoria.value);
-    produtos = filtrarPorTermo(produtos, inputPesquisa.value);
-    produtos = ordenarProdutos(produtos, selectOrdenar.value);
-    mostrarProdutos(produtos);
+  let produtos = lerDoLocalStorage(CHAVE_LS_PRODUTOS)
+
+  produtos = filtrarPorCategoria(produtos, selectCategoria.value)
+  produtos = filtrarPorTermo(produtos, inputPesquisa.value)
+  produtos = ordenarProdutos(produtos, selectOrdenar.value)
+
+  mostrarProdutos(produtos)
 }
 
 function filtrarPorCategoria(produtos, categoriaSelecionada) {
-    if (categoriaSelecionada === "todos") return produtos.slice();
-    return produtos.filter(p => p.category === categoriaSelecionada);
+  if (categoriaSelecionada === "todos" || categoriaSelecionada === "") return produtos.slice()
+
+  const filtrados = []
+  for (let i = 0; i < produtos.length; i++) {
+    if (produtos[i].category === categoriaSelecionada) filtrados.push(produtos[i])
+  }
+  return filtrados
 }
 
 function filtrarPorTermo(produtos, termo) {
-    termo = termo.toLowerCase();
-    if (!termo) return produtos;
-    return produtos.filter(p =>
-        p.title.toLowerCase().includes(termo) ||
-        p.description.toLowerCase().includes(termo)
-    );
+  const t = (termo || "").toLowerCase()
+  if (t === "") return produtos
+
+  const filtrados = []
+  for (let i = 0; i < produtos.length; i++) {
+    const titulo = String(produtos[i].title || "").toLowerCase()
+    const desc = String(produtos[i].description || "").toLowerCase()
+
+    if (titulo.includes(t) || desc.includes(t)) {
+      filtrados.push(produtos[i])
+    }
+  }
+  return filtrados
 }
 
 function ordenarProdutos(produtos, ordemSelecionada) {
-    const listaOrdenada = produtos.slice();
-    if (ordemSelecionada === "ascendente") listaOrdenada.sort((a, b) => a.price - b.price);
-    if (ordemSelecionada === "descendente") listaOrdenada.sort((a, b) => b.price - a.price);
-    return listaOrdenada;
+  const listaOrdenada = produtos.slice()
+
+  if (ordemSelecionada === "ascendente") {
+    listaOrdenada.sort(function (a, b) {
+      return Number(a.price) - Number(b.price)
+    })
+  }
+
+  if (ordemSelecionada === "descendente") {
+    listaOrdenada.sort(function (a, b) {
+      return Number(b.price) - Number(a.price)
+    })
+  }
+
+  return listaOrdenada
 }
 
-
 function configurarCheckout() {
-    btnComprar.addEventListener('click', async () => {
-        const carrinho = obterCarrinho();
-        if (!carrinho.length) {
-            alert("O carrinho está vazio!");
-            return;
-        }
+  btnComprar.onclick = async function () {
+    const carrinho = obterCarrinho()
+    if (carrinho.length === 0) {
+      alert("O carrinho está vazio!")
+      return
+    }
 
-        const idsProdutos = carrinho.map(p => p.id);
-        const estudante = document.querySelector('#student-check')?.checked || false;
-        const codigoCupao = document.querySelector('#cupao')?.value.trim() || null;
-        const nomeCliente = document.querySelector('#nome')?.value.trim() || "Sem nome";
+    const idsProdutos = []
+    for (let i = 0; i < carrinho.length; i++) {
+      idsProdutos.push(carrinho[i].id)
+    }
 
-        const dadosCompra = {
-            products: idsProdutos,
-            student: estudante,
-            coupon: codigoCupao,
-            name: nomeCliente
-        };
+    const studentEl = document.getElementById("student-check")
+    const cupaoEl = document.getElementById("cupao")
+    const nomeEl = document.getElementById("nome")
 
-        try {
-            const resposta = await fetch('https://deisishop.pythonanywhere.com/buy', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(dadosCompra)
-            });
+    const estudante = studentEl ? studentEl.checked : false
+    const codigoCupao = cupaoEl ? cupaoEl.value.trim() : null
+    const nomeCliente = nomeEl && nomeEl.value.trim() ? nomeEl.value.trim() : "Sem nome"
 
-            const resultado = await resposta.json();
+    const dadosCompra = {
+      products: idsProdutos,
+      student: estudante,
+      coupon: codigoCupao,
+      name: nomeCliente,
+    }
 
-           
-            localStorage.removeItem(CHAVE_LS_CARRINHO);
-            atualizarCarrinho();
+    try {
+      const resposta = await fetch("https://deisishop.pythonanywhere.com/buy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dadosCompra),
+      })
 
-            alert(`Compra efetuada com sucesso!
-Referência: ${resultado.reference}
-Total: €${resultado.totalCost}`);
-        } catch (erro) {
-            console.error(erro);
-            alert("Falha ao processar a compra.");
-        }
-    });
+      const resultado = await resposta.json()
+
+      localStorage.removeItem(CHAVE_LS_CARRINHO)
+      atualizarCarrinho()
+
+      alert(
+        "Compra efetuada com sucesso!\nReferência: " +
+          resultado.reference +
+          "\nTotal: €" +
+          resultado.totalCost
+      )
+    } catch (erro) {
+      alert("Falha ao processar a compra.")
+    }
+  }
 }
