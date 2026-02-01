@@ -1,4 +1,4 @@
-onst btnNao = document.querySelector("#btnNao")
+const btnNao = document.querySelector("#btnNao")
 
 let fugas = 0
 

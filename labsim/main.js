@@ -108,10 +108,10 @@ window.addEventListener("DOMContentLoaded", () => {
     const v = Number(range.value)
     let text = `Acabou! Fizeste ${points} pontos. `
 
-    if (points >= 18) text += "Ok… isso foi INSANO. Mimo garantido 😭💘"
-    else if (points >= 12) text += "Muito bom! Estás a dar sinais ótimos 😌"
-    else if (points >= 7) text += "Boa! Ainda dá para melhorar 😏"
-    else text += "Hmm… suspeito. Vamos repetir? 😈"
+    if (points >= 14) text += "és incrivel"
+    else if (points >= 10) text += "absolutamente insano"
+    else if (points >= 6) text += "ja estas a melhorar"
+    else text += "que porcaria ein"
 
     if (v >= 8) text += ` (e esse teu ${v}/10… eu vi 😌)`
 
