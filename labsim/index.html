@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dia 14 </title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="top">
+    <a class="back" href="../index.html">← voltar</a>
+    <h1>excelente escolha !!!!!!!!!!</h1>
+  </header>
+
+  <main class="wrap">
+    <section class="cardbox">
+      <h2>va entao de 0 a 10 o quanto queres estar comigo</h2>
+
+      <div class="meter">
+        <input id="range" type="range" min="0" max="10" value="5" />
+        <div class="score">
+          <span id="value">5</span>/10
+        </div>
+      </div>
+
+      <p class="msg" id="msg"></p>
+      <p class="after" id="after"></p>
+    </section>
+
+    <section class="cardbox">
+      <h2>Plano do dia 14 ✅</h2>
+      <ul class="plan" id="plan">
+        <li><strong>dia todo comigo:</strong> passear e ir a onde quiseres</li>
+        <li><strong>Comida:</strong> escolha de sua excelencia</li>
+        <li><strong>lanche:</strong> gelado de iogurte.</li>
+        <li><strong>passa tempo:</strong> ir ver um filme ao cinema( em lisboa damos nos ao luxo de ter cinema).</li>
+        
+      </ul>
+    </section>
+
+    <section class="cardbox">
+      <div class="gamehead">
+        <h2>Jogo: Apanha os Corações 💗</h2>
+        <button id="start" class="btn" type="button">começar</button>
+      </div>
+
+      <div class="hud">
+        <div>tempo: <span id="time">15</span>s</div>
+        <div>pontos: <span id="points">0</span></div>
+      </div>
+
+      <div class="arena" id="arena" aria-label="zona do jogo"></div>
+      <p class="result" id="result"></p>
+    </section>
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>

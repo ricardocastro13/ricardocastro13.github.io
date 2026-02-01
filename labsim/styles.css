@@ -1,0 +1,162 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  font-family: Arial, sans-serif;
+  background:
+    linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+    url("../images/valentino.jpg");
+  background-size:cover;
+  background-position: 50% 15%;
+  background-repeat:no-repeat;
+}
+
+.top{
+  position: sticky;
+  top: 0;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  padding:16px 18px;
+  background: rgba(255,255,255,0.75);
+  backdrop-filter: blur(8px);
+}
+
+.top h1{
+  font-size: 1.2rem;
+  color:#113b89dc;
+}
+
+.back{
+  text-decoration:none;
+  font-weight:bold;
+  color:#b42159dc;
+  padding:10px 12px;
+  border-radius:10px;
+  background: rgba(255,255,255,0.7);
+}
+
+.wrap{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 22px 16px 50px;
+  display:grid;
+  gap:18px;
+}
+
+.cardbox{
+  background: rgba(255,255,255,0.85);
+  border-radius: 18px;
+  padding: 18px;
+}
+
+.cardbox h2{
+  font-size: 1.2rem;
+  margin-bottom: 12px;
+  color:#1c2f55;
+}
+
+.meter{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+#range{
+  width: 100%;
+  accent-color: #ff4d7d;
+}
+
+.score{
+  min-width: 70px;
+  text-align:right;
+  font-weight:bold;
+  color:#1c2f55;
+}
+
+.msg{
+  margin-top: 12px;
+  font-size: 1.05rem;
+  font-weight: bold;
+  color:#b42159dc;
+}
+
+.after{
+  margin-top: 8px;
+  color:#1c2f55;
+}
+
+.plan{
+  display:grid;
+  gap:10px;
+  padding-left: 18px;
+  color:#1c2f55;
+}
+
+.gamehead{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom: 10px;
+}
+
+.btn{
+  border:0;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: bold;
+  color:white;
+  background:#ff4d7d;
+  cursor:pointer;
+  transition: transform .15s ease;
+}
+
+.btn:active{
+  transform: scale(0.98);
+}
+
+.hud{
+  display:flex;
+  justify-content:space-between;
+  padding:10px 12px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.08);
+  color:#1c2f55;
+  font-weight:bold;
+  margin-bottom: 10px;
+}
+
+.arena{
+  position: relative;
+  height: 280px;
+  width: 100%;
+  border-radius: 16px;
+  background: rgba(0,0,0,0.12);
+  overflow: hidden;
+}
+
+.heart{
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.9);
+  cursor: pointer;
+  user-select: none;
+  font-size: 22px;
+  transform: translate(-50%,-50%);
+}
+
+.result{
+  margin-top: 12px;
+  font-weight:bold;
+  color:#1c2f55;
+}

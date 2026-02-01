@@ -1,166 +1,172 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    height: 100%;
-    font-family: Arial, sans-serif;
-    scroll-behavior: smooth;
-    background-image: url("images/pngtree-modern-simple-elegant-landing-page-website-background-image_757443.jpg");
-    background-size: cover;       
-    background-position: center;  
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
+  min-height: 100vh;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  scroll-behavior: smooth;
+  background:
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+    url("images/valentino.jpg");
+  background-size: cover;
+  background-position: 7% 15%;
+  background-repeat: no-repeat;
+  background-attachment: scroll;
 }
-
 
 header {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: left;    
-    align-items: center;
-    padding: 15px 30px;
-    background-color: rgba(244, 244, 244, 0.9);
-    gap: 200px;
-   
-    
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 30px;
+  background-color: rgba(244, 244, 244, 0.9);
+  gap: 200px;
 }
-
 
 header h1 {
-    font-size: 2rem;
-    color: #113b89dc;
+  font-size: 2rem;
+  color: #113b89dc;
 }
 
-
 header nav ul {
-    list-style: none;
-    display: flex;
-    
-    gap: 60px;
+  list-style: none;
+  display: flex;
+  gap: 60px;
 }
 
 header nav a {
-    color: #b42159dc;
-    font-weight: bold;
-    text-decoration: none;
-    transition: color 0.3s ease;
+  color: #b42159dc;
+  font-weight: bold;
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
 
 header nav a:hover {
-    color: #ff6600;
+  color: #ff6600;
 }
-
 
 .hero {
-    height: 100vh;
-    background-image: url("img/Jalen-Brunson-e-Karl-Anthony-Towns.webp");
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    text-align: center;
-    padding: 0 20px;
+  height: 100vh;
+  background-image: url("img/Jalen-Brunson-e-Karl-Anthony-Towns.webp");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-align: center;
+  padding: 0 20px;
 }
 
-
 .hero-content {
-    background: rgba(0,0,0,0.5);
-    background-image: url(images/nuvem.svg);
-    padding: 2rem;
-    border-radius: 10px;
+  background: rgba(0,0,0,0.5);
+  background-image: url(images/nuvem.svg);
+  padding: 2rem;
+  border-radius: 10px;
 }
 
 .hero-content h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
 }
 
 .hero-content p {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
 }
 
 .btn {
-    display: inline-block;
-    padding: 0.8rem 1.5rem;
-    background: #ff6600;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background 0.3s ease;
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background: #ff6600;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background 0.3s ease;
 }
 
 .btn:hover {
-    background: #cc5200;
+  background: #cc5200;
 }
-
-
 
 section {
-    padding: 4rem 2rem;
-    min-height: 100vh; 
+  padding: 4rem 2rem;
+  min-height: 100vh;
 }
-
 
 main {
-    padding-top: 80px;
+  padding-top: 80px;
 }
+
+#projetos{
+  min-height: calc(100vh - 80px);
+}
+
 .cards {
-    display: flex;           
-    justify-content: center;  
-    gap: 2rem;                
-    flex-wrap: wrap;         
+  margin-top: 220px;
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
 }
+
 .card {
-    width: 200px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    color: white;
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-decoration: none; 
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 200px;
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+
 .card:nth-child(1) {
-    background-color: #ff5733;  
+  background-color: #ff5733;
 }
 
 .card:nth-child(2) {
-    background-color: #33a1ff; 
+  background-color: #33a1ff;
 }
 
 .card:nth-child(3) {
-    background-color: #33ff7a; 
-}
-.card:nth-child(4){
-    background-color: #33ffcf; 
-}
-.card:nth-child(5){
-    background-color: #ff33d4; 
-}
-.card:nth-child(6){
-    background-color: #ffbd33; 
+  background-color: #33ff7a;
 }
 
+.card:nth-child(4) {
+  background-color: #33ffcf;
+}
+
+.card:nth-child(5) {
+  background-color: #ff33d4;
+}
+
+.card:nth-child(6) {
+  background-color: #ffbd33;
+}
 
 .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
 
-
 .card a {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
+}
+
+#btnNao{
+  cursor: pointer;
 }

@@ -6,6 +6,7 @@ body {
 }
 
 header, footer {
+  
   background-color: #111;
   color: #fff;
   text-align: center;
@@ -49,7 +50,9 @@ main {
   gap: 1rem;
   justify-content: center;
 }
-
+h1{
+  displau
+}
 article {
   background-color: #fff;
   padding: 1rem;
