@@ -170,3 +170,19 @@ main {
 #btnNao{
   cursor: pointer;
 }
+@media (max-width: 520px){
+  header h1{
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .cards{
+    gap: 1rem;
+  }
+
+  .card{
+    width: 160px;
+    height: 120px;
+    font-size: 1.05rem;
+  }
+}
