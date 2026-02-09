@@ -3,11 +3,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>s</title>
+  <title>Dia dos namorados</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-  
+  <header>
+    <h1>queres passar o dia 14 comigo???</h1>
+    <nav></nav>
+  </header>
+
+  <main>
+    <section id="projetos">
+      <div class="cards">
+        <a href="labsim/index.html" class="card">sim</a>
+        <a id="btnNao" href="Labnao/index.html" class="card">nao</a>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const btnNao = document.querySelector("#btnNao")
+    let fugas = 0
+    const maxFugas = 10
+
+    function mover() {
+      const margem = 20
+      const maxX = window.innerWidth - btnNao.offsetWidth - margem
+      const maxY = window.innerHeight - btnNao.offsetHeight - margem
+
+      const x = Math.random() * (maxX > 0 ? maxX : 0)
+      const y = Math.random() * (maxY > 0 ? maxY : 0)
+
+      btnNao.style.position = "fixed"
+      btnNao.style.left = x + "px"
+      btnNao.style.top = y + "px"
+      btnNao.style.zIndex = "9999"
+    }
+
+    btnNao.addEventListener("mouseenter", () => {
+      if (fugas >= maxFugas) return
+      mover()
+      fugas += 1
+
+      if (fugas >= maxFugas) {
+        btnNao.textContent = "ok eu deixo te clicar"
+      }
+    })
+  </script>
+
 </body>
 </html>
